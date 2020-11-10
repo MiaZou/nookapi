@@ -75,3 +75,29 @@ app.get('/fish/:userId', async (req, res) => {
         console.log(error);
     }
 })
+
+// add a fish
+app.put('/:userId/fish/:fishId', async (req, res) => {
+    try {
+        await db.collection('fish').doc(req.params.userId + req.params.fishId).set({id: parseInt(req.params.fishId), userId: req.params.userId})
+        .then((snapshot) => {
+            console.log(snapshot);
+            return snapshot;
+        })
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+// delete a fish
+app.delete('/:userId/fishdel/:fishId', async (req, res) => {
+    try {
+        await db.collection('fish').doc(req.params.userId + req.params.fishId).delete()
+        .then((snapshot) => {
+            console.log(snapshot);
+            return snapshot;
+        })
+    } catch (error) {
+        console.log(error);
+    }
+})
