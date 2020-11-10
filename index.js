@@ -12,28 +12,9 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 
-// router.get('/:userId/villagers/:villagerId', async (req, res, next) => {
-//     try {
-
-//     }
-// });
-
 app.listen(PORT, () => {
     console.log(`Listening on http://localhost:${PORT}`);
 });
-
-// Set New Users
-// app.put('/users/:userId', async (req,res) => {
-//     try {
-//         await db.collection('users').doc().set({userId: req.params.userId})
-//         .then((snapshot) => {
-//             console.log(snapshot);
-//             return snapshot();
-//         })
-//     } catch (error) {
-//         console.log(error);
-//     }
-// })
 
 // get villagers
 app.get('/villagers/:userId', async (req, res) => {
