@@ -3,7 +3,10 @@ const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 8080;
 const app = express();
 
-app.use(bodyParser.json());
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+});
 
 const admin = require('firebase-admin');
 const serviceAccount = require('./ServiceAccountKey.json');
@@ -19,11 +22,12 @@ app.listen(PORT, () => {
 // get villagers
 app.get('/villagers/:userId', async (req, res) => {
     try {
-        const villagerData = [];
+        console.log(req.params.userId);
+        const villagerData = new Set();
         await db.collection('villagers').where('userId', '==', req.params.userId).orderBy('id').get()
         .then((snapshot) => {
             snapshot.forEach(doc => {
-                villagerData.push(doc['_fieldsProto']['id']['integerValue']);
+                villagerData.add(doc['_fieldsProto']['id']['integerValue']);
             });
             console.log(villagerData);
             return villagerData;
@@ -62,11 +66,11 @@ app.delete('/:userId/villagerdel/:villagerId', async (req, res) => {
 // get fish
 app.get('/fish/:userId', async (req, res) => {
     try {
-        const fishData = [];
+        const fishData = new Set();
         await db.collection('fish').where('userId', '==', req.params.userId).orderBy('id').get()
         .then((snapshot) => {
             snapshot.forEach(doc => {
-                fishData.push(doc['_fieldsProto']['id']['integerValue']);
+                fishData.add(doc['_fieldsProto']['id']['integerValue']);
             });
             console.log(fishData);
             return fishData;
