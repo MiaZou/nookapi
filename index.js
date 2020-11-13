@@ -23,14 +23,14 @@ app.listen(PORT, () => {
 app.get('/villagers/:userId', async (req, res) => {
     try {
         console.log(req.params.userId);
-        const villagerData = new Set();
+        const villagerData = [];
         await db.collection('villagers').where('userId', '==', req.params.userId).orderBy('id').get()
         .then((snapshot) => {
             snapshot.forEach(doc => {
-                villagerData.add(doc['_fieldsProto']['id']['integerValue']);
+                villagerData.push(doc['_fieldsProto']['id']['integerValue']);
             });
             console.log(villagerData);
-            return villagerData;
+            res.send(villagerData.json);
         })
     } catch (error) {
         console.log(error);
